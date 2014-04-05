@@ -1,17 +1,28 @@
 function GameManager(size, InputManager, Actuator, StorageManager) {
   this.size           = size; // Size of the grid
-  this.inputManager   = new InputManager;
-  this.storageManager = new StorageManager;
-  this.actuator       = new Actuator;
-
   this.startTiles     = 2;
+  this.storageManager = new StorageManager;
 
+  if (Actuator) {
+    this.actuator       = new Actuator;
+  }
+  if (InputManager) {
+    this.inputManager = new InputManager;
+    this.init();
+  }
+  this.setup();
+
+  return this;
+}
+
+// Init
+GameManager.prototype.init = function() {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
   this.setup();
-}
+};
 
 // Restart the game
 GameManager.prototype.restart = function () {
@@ -59,7 +70,9 @@ GameManager.prototype.setup = function () {
   }
 
   // Update the actuator
-  this.actuate();
+  if (this.actuator) {
+    this.actuate();
+  }
 };
 
 // Set up the initial tiles to start the game with
@@ -183,7 +196,7 @@ GameManager.prototype.move = function (direction) {
     });
   });
 
-  if (moved) {
+  if (moved && this.actuator) {
     this.addRandomTile();
 
     if (!this.movesAvailable()) {
@@ -192,6 +205,7 @@ GameManager.prototype.move = function (direction) {
 
     this.actuate();
   }
+  return moved;
 };
 
 // Get the vector representing the chosen direction

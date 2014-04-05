@@ -55,6 +55,9 @@ KeyboardInputManager.prototype.listen = function () {
                     event.shiftKey;
     var mapped    = map[event.which];
 
+    // Ignore the event if it's happening in a text field
+    if (self.targetIsInput(event)) return;
+
     if (!modifiers) {
       if (mapped !== undefined) {
         event.preventDefault();
@@ -141,4 +144,8 @@ KeyboardInputManager.prototype.bindButtonPress = function (selector, fn) {
   var button = document.querySelector(selector);
   button.addEventListener("click", fn.bind(this));
   button.addEventListener(this.eventTouchend, fn.bind(this));
+};
+
+KeyboardInputManager.prototype.targetIsInput = function (event) {
+  return event.target.tagName.toLowerCase() === "input";
 };

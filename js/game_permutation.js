@@ -1,14 +1,14 @@
 function Bot(game) {
   this.game = game;
   this.h_weights = {
-    score: .5,
-    position: .5
+    score: .8,
+    position: .2
   };
   this.position_tile_weights = [
-    [.13, .12, .11, .1],
-    [.14, .13, .12, .11],
-    [.15, .14, .13, .12],
-    [.25, .5, .75, 1]
+    [.4, .2, .1, .1],
+    [.8, .4, .2, .1],
+    [1.6, .8, .4, .2],
+    [25.6, 51.2, 102.4, 204.8]
   ];
   this.chances = [
     { val: 2, chance: .9},
